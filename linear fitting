@@ -1,0 +1,45 @@
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# Load your data from an Excel file
+# Replace 'your_data.xlsx' with the path to your Excel file
+# Assuming the data is in the first sheet and columns are named 'X' and 'Y'
+data = pd.read_excel('input_polyfit.xlsx')
+
+# Extract the X and Y columns
+x = data['X'].values
+y = data['Y'].values
+
+# Fit a linear polynomial (degree 1)
+degree = 1
+coefficients = np.polyfit(x, y, degree)
+
+# Create a polynomial function from the coefficients
+poly_func = np.poly1d(coefficients)
+
+# Generate fitted values
+y_fit = poly_func(x)
+
+# Save the coefficients and fitted values to a new DataFrame
+output_data = pd.DataFrame({
+    'X': x,
+    'Y': y,
+    'Fitted Y': y_fit
+})
+
+# Save the output DataFrame to an Excel file
+output_data.to_excel('output_polyfit.xlsx', index=False)
+
+# Plot the original data and the fitted line
+plt.scatter(x, y, color='blue', label='Data Points')
+plt.plot(x, y_fit, color='red', label='Fitted Line')
+plt.xlabel('X')
+plt.ylabel('Y')
+plt.title('Polynomial Fit using numpy.polyfit')
+plt.legend()
+plt.grid()
+plt.show()
+
+# Print the coefficients
+print("Coefficients:", coefficients)
